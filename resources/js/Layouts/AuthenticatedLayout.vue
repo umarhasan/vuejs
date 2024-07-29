@@ -5,6 +5,8 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+
+
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
@@ -32,23 +34,26 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                              
-                               <NavLink :href="route('user.index')" :active="route().current('user.index')">
-                                    Users
-                                </NavLink>
-                                <NavLink :href="route('permission.index')" :active="route().current('permission.index')">
-                                    Permission
-                                </NavLink>
-                                <NavLink :href="route('role.index')" :active="route().current('role.index')">
-                                    Role
-                                </NavLink>
-                                <NavLink :href="route('post.index')" :active="route().current('post.index')">
-                                    Post
-                                </NavLink>
-                                <a class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" href="https://laraveltuts.com" :class="classes">
-                                    LaravelTuts
-                                </a>
-
+                                <!-- <UserPermission permission="user list"> -->
+                                    <NavLink :href="route('user.index')" :active="route().current('user.index')">
+                                        Users
+                                    </NavLink>
+                                <!-- </UserPermission> -->
+                                <!-- <UserPermission permission="permission list"> -->
+                                    <NavLink :href="route('permission.index')" :active="route().current('permission.index')">
+                                        Permission
+                                    </NavLink>
+                                <!-- </UserPermission> -->
+                                <!-- <UserPermission permission="role list"> -->
+                                    <NavLink :href="route('role.index')" :active="route().current('role.index')">
+                                        Role
+                                    </NavLink>
+                                <!-- </UserPermission> -->
+                                <!-- <UserPermission permission="post list"> -->
+                                    <NavLink :href="route('post.index')" :active="route().current('post.index')">
+                                        Post
+                                    </NavLink>
+                                <!-- </UserPermission> -->
                             </div>
                         </div>
 
