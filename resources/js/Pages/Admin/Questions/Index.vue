@@ -3,7 +3,7 @@ import BreezeAuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 
 const props = defineProps({
-  roles: {
+  questions: {
     type: Object,
     default: () => ({}),
   },
@@ -17,12 +17,12 @@ const form = useForm();
 
 const deleteRole = (roleId) => {
   if (confirm('Are you sure you want to delete this role?')) {
-    form.delete(route('role.destroy', roleId), {
+    form.delete(route('questions.destroy', roleId), {
       onSuccess: () => {
-        console.log("Role deleted successfully.");
+        console.log("questions deleted successfully.");
       },
       onError: (errors) => {
-        console.error("Error in role deletion:", errors);
+        console.error("Error in questions deletion:", errors);
       }
     });
   }
