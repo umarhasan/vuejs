@@ -11,11 +11,7 @@ use Inertia\Inertia;
 class PostController extends Controller
 {
     
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function index()
     {
         $posts = (new Post)->newQuery();

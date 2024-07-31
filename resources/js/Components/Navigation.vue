@@ -12,10 +12,14 @@
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <NavLink :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</NavLink>
-                        <NavLink v-if="hasRole('Admin')" :href="route('user.index')" :active="route().current('user.index')">Users</NavLink>
-                        <NavLink v-if="hasPermission('permission list')" :href="route('permission.index')" :active="route().current('permission.index')">Permissions</NavLink>
+                        <NavLink v-if="hasPermission('user list')" :href="route('user.index')" :active="route().current('user.index')">Users</NavLink>
+                        <NavLink v-if="hasPermission('permission list')" :href="route('permissions.index')" :active="route().current('permission.index')">Permissions</NavLink>
                         <NavLink v-if="hasPermission('role list')" :href="route('role.index')" :active="route().current('role.index')">Roles</NavLink>
-                        <NavLink v-if="hasPermission('post list')" :href="route('post.index')" :active="route().current('post.index')">Posts</NavLink>
+                        <NavLink v-if="hasPermission('surveys list')" :href="route('surveys.index')" :active="route().current('surveys.index')">Surveys </NavLink>
+                        <NavLink v-if="hasPermission('questions list')" :href="route('questions.index')" :active="route().current('questions.index')">questions </NavLink>
+                        <NavLink v-if="hasPermission('options list')" :href="route('options.index')" :active="route().current('options.index')">Options </NavLink>
+                      <NavLink v-if="hasPermission('responses list')" :href="route('responses.index')" :active="route().current('responses.index')">responses </NavLink>
+                    
                     </div>
                 </div>
                 <!-- Profile Dropdown -->
@@ -68,23 +72,19 @@
     </nav>
 </template>
 
-
-
-
 <script setup>
-import { ref } from 'vue';
-import { Link, usePage } from '@inertiajs/inertia-vue3';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import { ref, inject } from 'vue';
+import { Link } from "@inertiajs/inertia-vue3";
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
+import Dropdown from "@/Components/Dropdown.vue";
+import DropdownLink from "@/Components/DropdownLink.vue";
+import NavLink from "@/Components/NavLink.vue";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 
 const showingNavigationDropdown = ref(false);
-const auth = usePage().props;
-const user = auth.user;
-const userPermissions = auth.permissions || [];
-
-const hasPermission = (permission) => userPermissions.includes(permission);
-const hasRole = (roles) => user.roles.map(role => role.name).includes(roles);
+const auth = inject('auth');
+const permissions = inject('permissions');
+const hasPermission = (permission) => {
+    return permissions && permissions.includes(permission);
+};
 </script>

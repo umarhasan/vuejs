@@ -1,6 +1,6 @@
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 
 const props = defineProps({
   permissions: {
@@ -11,8 +11,22 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
-})
+});
 
+const form = useForm();
+
+const deleteRole = (roleId) => {
+  if (confirm('Are you sure you want to delete this role?')) {
+    form.delete(route('permissions.destroy', roleId), {
+      onSuccess: () => {
+        console.log("permissions deleted successfully.");
+      },
+      onError: (errors) => {
+        console.error("Error in permissions deletion:", errors);
+      }
+    });
+  }
+};
 </script>
 
 <template>
@@ -33,7 +47,9 @@ const props = defineProps({
                             Permission Settings Page! Here you can list, create, update or delete permission!
                         </div>
                         <div class="flex space-x-2 items-center" v-if="can.create">
-                            <a href="#" class="px-4 py-2 bg-green-500 uppercase text-white rounded focus:outline-none flex items-center"><span class="iconify mr-1" data-icon="gridicons:create" data-inline="false"></span> Create Permission</a>
+                        <Link :href="route('permissions.create')" class="px-4 py-2 bg-green-500 uppercase text-white rounded focus:outline-none flex items-center">
+                            <span class="iconify mr-1" data-icon="gridicons:create" data-inline="false"></span> Create Permission
+                        </Link>
                         </div>
                     </div>
                 </div>
@@ -44,7 +60,7 @@ const props = defineProps({
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
                                 <th scope="col" class="py-3 px-6">Name</th>
-                                <th v-if="can.edit || can.delete" scope="col" class="py-3 px-6">Actions</th>
+                                <th  scope="col" class="py-3 px-6">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,16 +69,11 @@ const props = defineProps({
                                     {{ permission.name }}
                                 </td>
                                 <td
-                                    v-if="can.edit || can.delete"
                                     class="py-4 px-6"
                                 >
-                                    <div type="justify-start lg:justify-end" no-wrap>
-                                        <BreezeButton class="ml-4 bg-green-500 px-2 py-1 rounded text-white cursor-pointer" v-if="can.edit">
-                                            Edit
-                                        </BreezeButton>
-                                        <BreezeButton class="ml-4 bg-red-500 px-2 py-1 rounded text-white cursor-pointer" v-if="can.delete">
-                                            Delete
-                                        </BreezeButton>
+                                    <div class="flex space-x-4">
+                                        <Link v-if="can.edit" :href="route('permissions.edit', permission.id)" class="bg-green-500 px-2 py-1 rounded text-white cursor-pointer">Edit</Link>
+                                        <button v-if="can.delete" @click="deleteRole(permission.id)" class="bg-red-500 px-2 py-1 rounded text-white cursor-pointer">Delete</button>
                                     </div>
                                 </td>
                             </tr>
