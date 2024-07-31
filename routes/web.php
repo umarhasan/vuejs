@@ -51,7 +51,7 @@ Route::group([
         Route::resource('options', OptionController::class);
         Route::resource('responses', ResponseController::class);
         Route::resource('surveys.questions', QuestionController::class);
-        Route::get('responses', [ResponseController::class, 'index'])->name('admin.responses.index');
+        Route::get('responses', [ResponseController::class, 'index'])->name('responses.index');
     });
 
     // User and Admin-specific routes

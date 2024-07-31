@@ -3,7 +3,7 @@ import BreezeAuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 
 const props = defineProps({
-  roles: {
+  surveys: {
     type: Object,
     default: () => ({}),
   },
@@ -15,9 +15,9 @@ const props = defineProps({
 
 const form = useForm();
 
-const deleteRole = (roleId) => {
+const deleteSurvey = (roleId) => {
   if (confirm('Are you sure you want to delete this role?')) {
-    form.delete(route('role.destroy', roleId), {
+    form.delete(route('surveys.destroy', roleId), {
       onSuccess: () => {
         console.log("Role deleted successfully.");
       },

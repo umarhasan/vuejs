@@ -38,7 +38,7 @@ class SurveyController extends Controller
     {
         $request->validate(['title' => 'required|string', 'status' => 'required|in:Draft,Active,Close']);
         $survey = Survey::create($request->all());
-        return redirect()->route('admin.surveys.index');
+        return redirect()->route('surveys.index');
     }
 
     public function show(Survey $survey)
@@ -55,12 +55,12 @@ class SurveyController extends Controller
     {
         $request->validate(['title' => 'required|string', 'status' => 'required|in:Draft,Active,Close']);
         $survey->update($request->all());
-        return redirect()->route('admin.surveys.index');
+        return redirect()->route('surveys.index');
     }
 
     public function destroy(Survey $survey)
     {
         $survey->delete();
-        return redirect()->route('admin.surveys.index');
+        return redirect()->route('surveys.index');
     }
 }
