@@ -9,7 +9,7 @@
         <main>
             <slot />
         </main>
-        <br/><br/>
+        <br/><br/><br/>
         <Footer>
             <template #footer>
                 <slot name="footer" />
