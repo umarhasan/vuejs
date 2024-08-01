@@ -9,6 +9,7 @@
         <main>
             <slot />
         </main>
+        <br/><br/>
         <Footer>
             <template #footer>
                 <slot name="footer" />
