@@ -26,8 +26,10 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-
+// Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -50,16 +52,20 @@ Route::group([
         Route::resource('questions', QuestionController::class);
         Route::resource('options', OptionController::class);
         Route::resource('responses', ResponseController::class);
-        Route::resource('surveys.questions', QuestionController::class);
+        
+        Route::get('survey/{survey}/questions', [SurveyController::class, 'manageQuestions'])->name('surveys.manage.questions');
+        Route::get('question/{survey}/new', [QuestionController::class, 'create'])->name('question.new');
+        Route::get('question/{question}/options', [QuestionController::class, 'manageOptions'])->name('questions.manage.options');
+        Route::get('question/{question}/create', [OptionController::class,'create'])->name('options.new');
         Route::get('responses', [ResponseController::class, 'index'])->name('responses.index');
     });
 
     // User and Admin-specific routes
     Route::group(['middleware' => 'role:user,admin'], function () {
         Route::resource('user', UserController::class);
-        Route::resource('post', PostController::class);
+        Route::resource('posts', PostController::class);
         Route::resource('surveys', SurveyController::class)->only(['index', 'show']);
-        Route::resource('surveys.questions', QuestionController::class)->only(['show']);
+        Route::get('survey/{survey}/questions/{question}', [QuestionController::class, 'show'])->name('surveys.questions.show');
         Route::post('responses', [ResponseController::class, 'store'])->name('responses.store');
     });
 });

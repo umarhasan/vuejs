@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Survey;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ class SurveyController extends Controller
             $surveys = (new Survey)->newQuery();
             $surveys->latest();
             $surveys = $surveys->paginate(100)->onEachSide(2)->appends(request()->query());
-          
+            
 
             return Inertia::render('Admin/Surveys/Index', [
                 'surveys' => $surveys,
@@ -26,7 +27,7 @@ class SurveyController extends Controller
                     'delete' => Auth::user()->can('surveys delete'),
                 ]
             ]);
-        }
+    }
     
 
     public function create()
@@ -41,9 +42,13 @@ class SurveyController extends Controller
         return redirect()->route('surveys.index');
     }
 
-    public function show(Survey $survey)
+    
+    public function show(Survey $survey, Question $question)
     {
-        return Inertia::render('Admin/Surveys/show', ['survey' => $survey]);
+        return Inertia::render('Question/Show', [
+            'survey' => $survey,
+            'question' => $question,
+        ]);
     }
 
     public function edit(Survey $survey)
@@ -62,5 +67,14 @@ class SurveyController extends Controller
     {
         $survey->delete();
         return redirect()->route('surveys.index');
+    }
+
+    
+
+    public function manageQuestions(Survey $survey)
+    {
+        // dd('abc');
+        $questions = $survey->questions;
+        return Inertia::render('Admin/Surveys/ManageQuestions', ['survey' => $survey, 'questions' => $questions]);
     }
 }

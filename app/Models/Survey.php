@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Survey extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'status'];
+    protected $fillable = ['id','title', 'status'];
 
     /**
      * Get the questions for the survey.

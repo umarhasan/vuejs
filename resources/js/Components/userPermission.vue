@@ -6,15 +6,15 @@
 
 <script setup>
 import { computed } from 'vue';
-import { usePage } from '@inertiajs/inertia-vue3';
+import { useStore } from 'vuex';
 
 const props = defineProps({
   permission: String
 });
 
+const store = useStore();
 const hasPermission = computed(() => {
-  // Assuming the user's permissions are stored as an array in `auth.user.permissions`
-  const userPermissions = usePage().props.value.auth.user.permissions || [];
+  const userPermissions = store.getters.permissions || [];
   return userPermissions.includes(props.permission);
 });
 </script>

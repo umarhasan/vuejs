@@ -24,4 +24,22 @@ class ResponseController extends Controller
         ]);
     }
 
+    public function show(Response $response)
+    {
+        $questions = $response->survey->questions;
+        $responses = $response->responses;
+        return Inertia::render('Response/Show', ['response' => $response, 'questions' => $questions, 'responses' => $responses]);
+    }
+
+    public function destroy(Response $response)
+    {
+        $response->delete();
+        return redirect()->route('responses.index')->with('success', 'Response deleted successfully.');
+    }
+
+    public function store(Request $request)
+    {
+        // Implement your logic to store responses
+    }
+
 }

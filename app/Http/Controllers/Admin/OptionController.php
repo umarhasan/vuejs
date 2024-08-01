@@ -13,13 +13,16 @@ use Illuminate\Support\Facades\Auth;
 class OptionController extends Controller
 {
    
-    public function index(Question $question)
-    {
-        $options = $question->options()->latest()->paginate(100)->onEachSide(2)->appends(request()->query());
-
+    public function index()
+    {   
+        $options = Option::with('question')->latest()->paginate(100)->onEachSide(2)->appends(request()->query());
+    
+        // Collect all options from the questions
+        $questions = $options->getCollection()->flatMap->question;
+    
         return Inertia::render('Admin/Options/Index', [
+            'questions' => $questions,
             'options' => $options,
-            'question' => $question,
             'can' => [
                 'create' => Auth::user()->can('options create'),
                 'edit' => Auth::user()->can('options edit'),
@@ -28,37 +31,41 @@ class OptionController extends Controller
         ]);
     }
 
+    
+
     public function create(Question $question)
     {
         return Inertia::render('Admin/Options/create', ['question' => $question]);
     }
 
-    public function store(Request $request, Question $question)
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string',
+            'question_id' => 'required|exists:questions,id'
         ]);
-        $question->options()->create($request->all());
-        return redirect()->route('admin.questions.options.index', $question);
+
+        Option::create($request->all());
+        return redirect()->route('options.index')->with('success', 'Option created successfully.');
     }
 
-    public function edit(Question $question, Option $option)
+    public function edit(Option $option)
     {
-        return Inertia::render('Admin/Options/edit', ['question' => $question, 'option' => $option]);
+        return Inertia::render('Admin/Options/edit', ['option' => $option]);
     }
 
-    public function update(Request $request, Question $question, Option $option)
+    public function update(Request $request, Option $option)
     {
-        $request->validate([
-            'name' => 'required|string',
-        ]);
+        $request->validate(['name' => 'required|string']);
         $option->update($request->all());
-        return redirect()->route('admin.questions.options.index', $question);
+        return redirect()->route('options.index')->with('success', 'Option updated successfully.');
     }
 
-    public function destroy(Question $question, Option $option)
+    public function destroy(Option $option)
     {
         $option->delete();
-        return redirect()->route('admin.questions.options.index', $question);
+        return redirect()->route('options.index')->with('success', 'Option deleted successfully.');
     }
 }
+
+
