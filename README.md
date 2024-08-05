@@ -33,9 +33,9 @@ php artisan migrate
 Sure, I understand you want a complete `README.md` file for your GitHub project, which includes detailed setup instructions and images. Here is the full content:
 
 ```markdown
-# Ride Hailing Project
+# Vue js Project
 
-Welcome to the Ride Hailing project. This README will guide you through the setup and configuration process.
+Welcome to the vue js project. This README will guide you through the setup and configuration process.
 
 ## 1. Project Setup
 
