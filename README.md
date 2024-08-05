@@ -62,13 +62,9 @@ DB_PASSWORD=
 
 Set up authentication using Laravel Breeze for simple authentication:
 
-```bash
-composer require laravel/breeze --dev
-php artisan breeze:install
 npm install && npm run dev
 php artisan migrate
 php artisan db:seed
-```
 
 
 
