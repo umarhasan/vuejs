@@ -19,10 +19,6 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-## 3. Authentication
-
-Set up authentication using Laravel Breeze for simple authentication:
-
 npm install && npm run dev
 php artisan migrate
 php artisan db:seed
