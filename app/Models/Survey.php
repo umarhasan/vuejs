@@ -17,4 +17,8 @@ class Survey extends Model
     {
         return $this->hasMany(Question::class);
     }
+    public function getTotalQuestionsAttribute()
+    {
+        return $this->questions()->count();
+    }
 }

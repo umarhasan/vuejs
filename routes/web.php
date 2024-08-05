@@ -68,6 +68,6 @@ Route::group([
         Route::resource('responses', ResponseController::class);
         Route::resource('surveys', SurveyController::class)->only(['index', 'show']);
         Route::get('survey/{survey}/questions/{question}', [QuestionController::class, 'show'])->name('surveys.questions.show');
-        // Route::post('responses', [ResponseController::class, 'store'])->name('responses.store');
+        Route::post('responses', [ResponseController::class, 'store'])->name('responses.store');
     });
 });

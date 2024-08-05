@@ -44,7 +44,12 @@ const deleteResponse = (responseId) => {
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div class="flex bg-gray-800 justify-between items-center p-5">
             <div class="flex space-x-2 items-center text-white">
-              Response Settings Page! Here you can list, create, update or delete responses!
+              responses Settings Page! Here you can list, create, update or delete roles!
+            </div>
+            <div class="flex space-x-2 items-center" v-if="can.create">
+              <Link :href="route('responses.create')" class="px-4 py-2 bg-green-500 uppercase text-white rounded focus:outline-none flex items-center">
+                <span class="iconify mr-1" data-icon="gridicons:create" data-inline="false"></span> Create Role
+              </Link>
             </div>
           </div>
         </div>
@@ -67,7 +72,7 @@ const deleteResponse = (responseId) => {
                   {{ response.user.name }}
                 </td>
                 <td data-label="Survey Name" class="py-4 px-6">
-                  {{ response.survey.title }}
+                  {{ response.question.survey.title }}
                 </td>
                 <td data-label="Total Questions" class="py-4 px-6">
                   {{ response.total_questions }}

@@ -1,3 +1,25 @@
+<script setup>
+import BreezeAuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { Head, useForm, usePage } from '@inertiajs/inertia-vue3';
+
+const { response, questions } = usePage().props;
+const form = useForm(response);
+
+const submit = () => {
+  console.log("Form data before submission:", form);
+  form.put(`/responses/${response.id}`, {
+    preserveScroll: true,
+    onSuccess: () => {
+      form.reset('response');
+      console.log("Response updated successfully.");
+    },
+    onError: (errors) => {
+      console.error("Error updating response:", errors);
+    }
+  });
+};
+</script>
+
 <template>
   <Head title="Edit Response" />
 
@@ -7,18 +29,41 @@
     </template>
 
     <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-5">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-          <form @submit.prevent="updateResponse">
-            <!-- Response Input -->
-            <div class="mb-4">
-              <label for="response" class="block text-sm font-medium text-gray-700">Response</label>
-              <textarea v-model="form.response" id="response" class="mt-1 block w-full" required></textarea>
+          <form @submit.prevent="submit">
+            <!-- Question Selection -->
+            <div class="mt-4">
+              <label for="question_id" class="block text-sm font-medium text-gray-700">Question:</label>
+              <select v-model="form.question_id" id="question_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                <option disabled value="">Please select one</option>
+                <option v-for="question in questions" :key="question.id" :value="question.id">
+                  {{ question.text }} <!-- Ensure 'text' is the correct property to display -->
+                </option>
+              </select>
+            </div>
+
+            <!-- Text Response -->
+            <div class="mt-4">
+              <label for="response" class="block text-sm font-medium text-gray-700">Response:</label>
+              <textarea v-model="form.response" id="response" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required></textarea>
+            </div>
+
+            <!-- Total Questions -->
+            <div class="mt-4">
+              <label for="total_questions" class="block text-sm font-medium text-gray-700">Total Questions:</label>
+              <input type="number" v-model="form.total_questions" id="total_questions" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+            </div>
+
+            <!-- Completed At -->
+            <div class="mt-4">
+              <label for="completed_at" class="block text-sm font-medium text-gray-700">Completed At:</label>
+              <input type="date" v-model="form.completed_at" id="completed_at" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
             </div>
 
             <!-- Submit Button -->
-            <div>
-              <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Update Response</button>
+            <div class="mt-6">
+              <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Update Response</button>
             </div>
           </form>
         </div>
@@ -26,21 +71,3 @@
     </div>
   </BreezeAuthenticatedLayout>
 </template>
-
-<script setup>
-import BreezeAuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, useForm } from '@inertiajs/inertia-vue3';
-import { defineProps } from 'vue';
-
-const props = defineProps({
-  response: Object,
-});
-
-const form = useForm({
-  response: props.response.response,
-});
-
-const updateResponse = () => {
-  form.put(route('responses.update', props.response.id));
-};
-</script>
