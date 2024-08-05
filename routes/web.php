@@ -18,13 +18,14 @@ use Inertia\Inertia;
 
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Auth/Login', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
 
 // Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard', function () {
@@ -64,8 +65,9 @@ Route::group([
     Route::group(['middleware' => 'role:user,admin'], function () {
         Route::resource('user', UserController::class);
         Route::resource('posts', PostController::class);
+        Route::resource('responses', ResponseController::class);
         Route::resource('surveys', SurveyController::class)->only(['index', 'show']);
         Route::get('survey/{survey}/questions/{question}', [QuestionController::class, 'show'])->name('surveys.questions.show');
-        Route::post('responses', [ResponseController::class, 'store'])->name('responses.store');
+        // Route::post('responses', [ResponseController::class, 'store'])->name('responses.store');
     });
 });
